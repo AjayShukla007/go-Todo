@@ -99,15 +99,15 @@ func updateHandler(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "empty id"})
 	}
 	filter := bson.M{"_id": objectId}
-	update := bson.M{"$set":bson.M{"done": true}}
+	update := bson.M{"$set": bson.M{"done": true}}
 	_, err = collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		return err
 	}
-	return c.Status(200).JSON(fiber.Map{"success":true})
+	return c.Status(200).JSON(fiber.Map{"success": true})
 }
 
-func delHandler(c *fiber.Ctx) error{
+func delHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -117,7 +117,7 @@ func delHandler(c *fiber.Ctx) error{
 	filter := bson.M{"_id": objectId}
 
 	_, err = collection.DeleteOne(context.Background(), filter)
-	
+
 	if err != nil {
 		return err
 	}
