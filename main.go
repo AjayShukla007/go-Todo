@@ -76,7 +76,7 @@ func getHandler(c *fiber.Ctx) error {
 
 func postHandler(c *fiber.Ctx) error {
 	todo := new(Todo)
-	
+
 	if err := c.BodyParser(todo); err != nil {
 		return err
 	}
@@ -84,6 +84,7 @@ func postHandler(c *fiber.Ctx) error {
 	if todo.Title == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "title cannot be empty string"})
 	}
+	
 	insertResult, err := collection.InsertOne(context.Background(), todo)
 
 	if err != nil {
