@@ -94,7 +94,7 @@ func postHandler(c *fiber.Ctx) error {
 	}
 
 	todo.ID = insertResult.InsertedID.(primitive.ObjectID)
-	
+
 	return c.Status(201).JSON(todo)
 }
 
