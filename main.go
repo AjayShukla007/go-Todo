@@ -84,11 +84,13 @@ func postHandler(c *fiber.Ctx) error {
 	if todo.Title == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "title cannot be empty string"})
 	}
-	
+
 	insertResult, err := collection.InsertOne(context.Background(), todo)
 
 	if err != nil {
+
 		return c.Status(500).JSON(fiber.Map{"error": "error adding todo"})
+		
 	}
 	todo.ID = insertResult.InsertedID.(primitive.ObjectID)
 	return c.Status(201).JSON(todo)
