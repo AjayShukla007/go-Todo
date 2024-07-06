@@ -90,8 +90,9 @@ func postHandler(c *fiber.Ctx) error {
 	if err != nil {
 
 		return c.Status(500).JSON(fiber.Map{"error": "error adding todo"})
-		
+
 	}
+	
 	todo.ID = insertResult.InsertedID.(primitive.ObjectID)
 	return c.Status(201).JSON(todo)
 }
