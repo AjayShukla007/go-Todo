@@ -75,6 +75,7 @@ func getHandler(c *fiber.Ctx) error {
 }
 
 func postHandler(c *fiber.Ctx) error {
+	
 	todo := new(Todo)
 
 	if err := c.BodyParser(todo); err != nil {
