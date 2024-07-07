@@ -81,7 +81,6 @@ func postHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(todo); err != nil {
 		return err
 	}
-
 	if todo.Title == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "title cannot be empty string"})
 	}
