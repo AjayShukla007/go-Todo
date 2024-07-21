@@ -63,10 +63,12 @@ func getHandler(c *fiber.Ctx) error {
 
 	cursor, err := collection.Find(context.Background(), bson.M{})
 	if err != nil {
-		
+
 		return err
 	}
+
 	defer cursor.Close(context.Background())
+	
 	for cursor.Next(context.Background()) {
 		var todo Todo
 		if err := cursor.Decode(&todo); err != nil {
