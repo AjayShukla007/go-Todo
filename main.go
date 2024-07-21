@@ -58,8 +58,9 @@ func main() {
 }
 
 func getHandler(c *fiber.Ctx) error {
-	
+
 	var todos []Todo
+	
 	cursor, err := collection.Find(context.Background(), bson.M{})
 	if err != nil {
 		return err
