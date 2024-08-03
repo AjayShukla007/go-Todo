@@ -106,8 +106,9 @@ func updateHandler(c *fiber.Ctx) error {
 	_, err = collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		return err
-		
+
 	}
+	
 	return c.Status(200).JSON(fiber.Map{"success": true})
 }
 
