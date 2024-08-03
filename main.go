@@ -92,8 +92,9 @@ func postHandler(c *fiber.Ctx) error {
 }
 
 func updateHandler(c *fiber.Ctx) error {
-	
+
 	id := c.Params("id")
+	
 	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "empty id"})
