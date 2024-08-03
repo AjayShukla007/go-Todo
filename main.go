@@ -105,12 +105,13 @@ func updateHandler(c *fiber.Ctx) error {
 	update := bson.M{"$set": bson.M{"done": true}}
 	_, err = collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
-		
+
 		return err
 
 	}
 
 	return c.Status(200).JSON(fiber.Map{"success": true})
+	
 }
 
 func delHandler(c *fiber.Ctx) error {
