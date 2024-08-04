@@ -101,7 +101,6 @@ func updateHandler(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "empty id"})
 	}
 	filter := bson.M{"_id": objectId}
-
 	update := bson.M{"$set": bson.M{"done": true}}
 	_, err = collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
