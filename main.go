@@ -104,10 +104,10 @@ func updateHandler(c *fiber.Ctx) error {
 		return err
 	}
 	return c.Status(200).JSON(fiber.Map{"success": true})
-
 }
 
 func delHandler(c *fiber.Ctx) error {
+	
 	id := c.Params("id")
 	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
