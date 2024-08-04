@@ -107,11 +107,10 @@ func updateHandler(c *fiber.Ctx) error {
 	if err != nil {
 
 		return err
-
 	}
 
 	return c.Status(200).JSON(fiber.Map{"success": true})
-	
+
 }
 
 func delHandler(c *fiber.Ctx) error {
