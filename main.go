@@ -108,7 +108,6 @@ func updateHandler(c *fiber.Ctx) error {
 
 		return err
 	}
-
 	return c.Status(200).JSON(fiber.Map{"success": true})
 
 }
