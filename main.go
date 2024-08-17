@@ -113,11 +113,12 @@ func delHandler(c *fiber.Ctx) error {
 	objectId, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
-		
+
 		return c.Status(400).JSON(fiber.Map{"error": "empty id"})
 	}
 
 	filter := bson.M{"_id": objectId}
+	
 
 	_, err = collection.DeleteOne(context.Background(), filter)
 
