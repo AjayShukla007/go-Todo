@@ -118,12 +118,13 @@ func delHandler(c *fiber.Ctx) error {
 	}
 
 	filter := bson.M{"_id": objectId}
-	
+
 
 	_, err = collection.DeleteOne(context.Background(), filter)
 
 	if err != nil {
 		return err
+		
 	}
 
 	return c.Status(200).JSON(fiber.Map{"succsess": "todo deleted successfully"})
