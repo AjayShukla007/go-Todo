@@ -121,7 +121,6 @@ func delHandler(c *fiber.Ctx) error {
 
 
 	_, err = collection.DeleteOne(context.Background(), filter)
-
 	if err != nil {
 		return err
 	}
