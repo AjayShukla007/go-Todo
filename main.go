@@ -119,7 +119,6 @@ func delHandler(c *fiber.Ctx) error {
 
 	filter := bson.M{"_id": objectId}
 
-
 	_, err = collection.DeleteOne(context.Background(), filter)
 	if err != nil {
 		return err
