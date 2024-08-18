@@ -124,7 +124,6 @@ func delHandler(c *fiber.Ctx) error {
 
 	if err != nil {
 		return err
-		
 	}
 
 	return c.Status(200).JSON(fiber.Map{"succsess": "todo deleted successfully"})
