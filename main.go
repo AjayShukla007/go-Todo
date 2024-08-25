@@ -206,3 +206,13 @@ test(training{"Raj", 100, 10}) */
 // HTTP 201: Created successfully
 // HTTP 400: Invalid input
 // HTTP 500: Server error
+
+// updateHandler marks a todo as complete
+// Expects todo ID in URL parameter
+// HTTP 200: Updated successfully
+// HTTP 400: Invalid ID
+
+// delHandler removes a todo item
+// Expects todo ID in URL parameter
+// HTTP 200: Deleted successfully
+// HTTP 400: Invalid ID
