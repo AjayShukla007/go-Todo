@@ -23,6 +23,10 @@ type Todo struct {
 
 var collection *mongo.Collection
 
+// BlogsAPI - A RESTful API for managing blog posts
+// Author: [Your Name]
+// Version: 1.0.0
+
 func main() {
 	fmt.Println("Hello World")
 	err := godotenv.Load(".env")
@@ -121,7 +125,6 @@ func delHandler(c *fiber.Ctx) error {
 		return err
 	}
 	return c.Status(200).JSON(fiber.Map{"succsess": "todo deleted successfully"})
-
 }
 
 /*
