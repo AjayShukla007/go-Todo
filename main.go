@@ -195,3 +195,8 @@ test(training{"Raj", 100, 10}) */
 // initializeDatabase establishes connection with MongoDB
 // Returns an error if connection fails
 // Uses MONGO_URI from environment variables
+
+// getHandler retrieves all todos from the database
+// Returns JSON array of todos
+// HTTP 200: Success
+// HTTP 500: Server error
