@@ -27,6 +27,10 @@ var collection *mongo.Collection
 // Author: [Your Name]
 // Version: 1.0.0
 
+// Environment Variables:
+// MONGO_URI - MongoDB connection string
+// PORT - Server port number
+
 func main() {
 	fmt.Println("Hello World")
 	err := godotenv.Load(".env")
