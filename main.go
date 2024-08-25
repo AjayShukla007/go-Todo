@@ -200,3 +200,9 @@ test(training{"Raj", 100, 10}) */
 // Returns JSON array of todos
 // HTTP 200: Success
 // HTTP 500: Server error
+
+// postHandler creates a new todo item
+// Expects JSON body with title
+// HTTP 201: Created successfully
+// HTTP 400: Invalid input
+// HTTP 500: Server error
