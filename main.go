@@ -15,6 +15,10 @@ import (
 	// "go.mongodb.org/mongo-driver/x/mongo/driver/mongocrypt/options"
 )
 
+// Todo represents a single todo item in the database
+// ID: Unique identifier for the todo item
+// Title: The todo item's description
+// Done: Indicates if the todo is completed
 type Todo struct {
 	ID    primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	Title string             `json:"title"`
