@@ -191,3 +191,7 @@ type employee interface {
 /* test(contractor{"Ajay", 100, 10})
 test(fullTime{"Vijay", 1200})
 test(training{"Raj", 100, 10}) */
+
+// initializeDatabase establishes connection with MongoDB
+// Returns an error if connection fails
+// Uses MONGO_URI from environment variables
