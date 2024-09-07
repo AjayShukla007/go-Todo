@@ -17,6 +17,7 @@ import (
 
 // Todo represents a single todo item in the database
 // ID: Unique identifier for the todo item
+
 // Title: The todo item's description
 
 // Done: Indicates if the todo is completed
