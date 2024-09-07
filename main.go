@@ -38,8 +38,8 @@ var collection *mongo.Collection
 
 
 func main() {
-	
-	fmt.Println("Hello World")
+
+	fmt.Println("server stating")
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("error: Error loading .env file,", err)
