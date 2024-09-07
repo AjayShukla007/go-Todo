@@ -36,7 +36,9 @@ var collection *mongo.Collection
 // MONGO_URI - MongoDB connection string
 // PORT - Server port number
 
+
 func main() {
+	
 	fmt.Println("Hello World")
 	err := godotenv.Load(".env")
 	if err != nil {
