@@ -28,10 +28,8 @@ type Todo struct {
 var collection *mongo.Collection
 
 // BlogsAPI - A RESTful API for managing blog posts
-
 // Author: Ajay Shukla
 // Version: 1.0.0
-
 // Environment Variables:
 // MONGO_URI - MongoDB connection string
 // PORT - Server port number
