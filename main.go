@@ -36,14 +36,25 @@ var collection *mongo.Collection
 
 // @title Blog & Todo API
 // @version 2.0
-// @description A RESTful API for managing blogs and todos with MongoDB
+// @description A RESTful API for managing blogs and todos
 // @host localhost:8080
 // @BasePath /api/v1
-// @schemes http https
 // @contact.name API Support
 // @contact.email support@example.com
-// @license.name MIT
-// @license.url https://opensource.org/licenses/MIT
+
+type APIError struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+	Code    string `json:"code"`
+}
+
+func handleAPIError(c *fiber.Ctx, status int, message string) error {
+	return c.Status(status).JSON(APIError{
+		Status:  status,
+		Message: message,
+		Code:    fmt.Sprintf("ERR_%d", status),
+	})
+}
 
 func main() {
 
