@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -59,6 +60,21 @@ func handleAPIError(c *fiber.Ctx, status int, message string) error {
 	})
 }
 
+func logMiddleware() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		start := time.Now()
+		err := c.Next()
+		log.Printf(
+			"method=%s path=%s status=%d duration=%s",
+			c.Method(),
+			c.Path(),
+			c.Response().StatusCode(),
+			time.Since(start),
+		)
+		return err
+	}
+}
+
 func main() {
 
 	fmt.Println("server stating")
@@ -83,6 +99,7 @@ func main() {
 	collection = client.Database("golang_db").Collection("todos")
 
 	app := fiber.New()
+	app.Use(logMiddleware())
 
 	app.Get("/", getHandler)
 	app.Post("/api/post", postHandler)
