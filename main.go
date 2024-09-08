@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -75,26 +74,27 @@ func logMiddleware() fiber.Handler {
 	}
 }
 
-func main() {
-
-	fmt.Println("server stating")
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("error: Error loading .env file,", err)
-	}
-	MONGO_URI := os.Getenv("MONGO_URI")
-	clientOption := options.Client().ApplyURI(MONGO_URI)
+func initializeDatabase(uri string) (*mongo.Client, error) {
+	clientOption := options.Client().ApplyURI(uri)
 	client, err := mongo.Connect(context.Background(), clientOption)
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to MongoDB: %v", err)
+	}
+
+	err = client.Ping(context.Background(), nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to ping MongoDB: %v", err)
+	}
+
+	return client, nil
+}
+
+func main() {
+	client, err := initializeDatabase(os.Getenv("MONGO_URI"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer client.Disconnect(context.Background())
-	err = client.Ping(context.Background(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("connected to mongo")
 
 	collection = client.Database("golang_db").Collection("todos")
 
