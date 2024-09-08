@@ -108,6 +108,20 @@ func loadConfig() (*Config, error) {
 	}, nil
 }
 
+type HealthResponse struct {
+	Status    string `json:"status"`
+	Timestamp string `json:"timestamp"`
+	Version   string `json:"version"`
+}
+
+func healthHandler(c *fiber.Ctx) error {
+	return c.JSON(HealthResponse{
+		Status:    "ok",
+		Timestamp: time.Now().Format(time.RFC3339),
+		Version:   "2.0.0",
+	})
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -129,6 +143,7 @@ func main() {
 	app.Post("/api/post", postHandler)
 	app.Patch("/api/updateTodo/:id", updateHandler)
 	app.Delete("/api/deleteTodo/:id", delHandler)
+	app.Get("/health", healthHandler)
 
 	port := config.Port
 
