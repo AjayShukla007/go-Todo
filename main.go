@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/joho/godotenv"
 	// "go.mongodb.org/mongo-driver/x/mongo/driver/mongocrypt/options"
 )
 
@@ -89,8 +90,31 @@ func initializeDatabase(uri string) (*mongo.Client, error) {
 	return client, nil
 }
 
+type Config struct {
+	MongoURI string
+	Port     string
+	Env      string
+}
+
+func loadConfig() (*Config, error) {
+	if err := godotenv.Load(); err != nil {
+		return nil, fmt.Errorf("error loading .env file: %v", err)
+	}
+	
+	return &Config{
+		MongoURI: os.Getenv("MONGO_URI"),
+		Port:     os.Getenv("PORT"),
+		Env:      os.Getenv("ENV"),
+	}, nil
+}
+
 func main() {
-	client, err := initializeDatabase(os.Getenv("MONGO_URI"))
+	config, err := loadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client, err := initializeDatabase(config.MongoURI)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -106,7 +130,7 @@ func main() {
 	app.Patch("/api/updateTodo/:id", updateHandler)
 	app.Delete("/api/deleteTodo/:id", delHandler)
 
-	port := os.Getenv("PORT")
+	port := config.Port
 
 	log.Fatal(app.Listen("0.0.0.0:" + port))
 }
