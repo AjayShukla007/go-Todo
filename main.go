@@ -36,11 +36,14 @@ var collection *mongo.Collection
 
 // @title Blog & Todo API
 // @version 2.0
-// @description A RESTful API for managing blogs and todos
+// @description A RESTful API for managing blogs and todos with MongoDB
 // @host localhost:8080
 // @BasePath /api/v1
+// @schemes http https
 // @contact.name API Support
 // @contact.email support@example.com
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
 
 type APIError struct {
 	Status  int    `json:"status"`
@@ -112,10 +115,10 @@ func getHandler(c *fiber.Ctx) error {
 func postHandler(c *fiber.Ctx) error {
 	todo := new(Todo)
 	if err := c.BodyParser(todo); err != nil {
-		return err
+		return handleAPIError(c, 400, "Invalid request body")
 	}
-	if todo.Title == "" {
-		return c.Status(400).JSON(fiber.Map{"error": "title cannot be empty string"})
+	if err := validateTodo(todo); err != nil {
+		return handleAPIError(c, 400, err.Error())
 	}
 	insertResult, err := collection.InsertOne(context.Background(), todo)
 	if err != nil {
@@ -155,6 +158,16 @@ func delHandler(c *fiber.Ctx) error {
 		return err
 	}
 	return c.Status(200).JSON(fiber.Map{"succsess": "todo deleted successfully"})
+}
+
+func validateTodo(todo *Todo) error {
+	if todo.Title == "" {
+		return fmt.Errorf("title is required")
+	}
+	if len(todo.Title) > 100 {
+		return fmt.Errorf("title must be less than 100 characters")
+	}
+	return nil
 }
 
 /*
