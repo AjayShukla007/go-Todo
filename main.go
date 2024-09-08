@@ -34,6 +34,16 @@ var collection *mongo.Collection
 // MONGO_URI - MongoDB connection string
 // PORT - Server port number
 
+// @title Blog & Todo API
+// @version 2.0
+// @description A RESTful API for managing blogs and todos with MongoDB
+// @host localhost:8080
+// @BasePath /api/v1
+// @schemes http https
+// @contact.name API Support
+// @contact.email support@example.com
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
 
 func main() {
 
