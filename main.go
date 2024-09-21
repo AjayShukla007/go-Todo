@@ -185,6 +185,15 @@ func timeoutMiddleware(timeout time.Duration) fiber.Handler {
     }
 }
 
+func corsMiddleware() fiber.Handler {
+    return func(c *fiber.Ctx) error {
+        c.Set("Access-Control-Allow-Origin", "*")
+        c.Set("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE")
+        c.Set("Access-Control-Allow-Headers", "Content-Type, Accept")
+        return c.Next()
+    }
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -204,6 +213,7 @@ func main() {
 	app.Use(limiter.Limit(100, time.Minute))
 	app.Use(logMiddleware())
 	app.Use(timeoutMiddleware(10 * time.Second))
+	app.Use(corsMiddleware())
 
 	app.Get("/", getHandler)
 	app.Post("/api/post", postHandler)
