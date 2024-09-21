@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -263,6 +264,9 @@ func validateTodo(todo *Todo) error {
 	}
 	if len(todo.Title) > 100 {
 		return fmt.Errorf("title must be less than 100 characters")
+	}
+	if strings.TrimSpace(todo.Title) == "" {
+		return fmt.Errorf("title cannot be only whitespace")
 	}
 	return nil
 }
