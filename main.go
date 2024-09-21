@@ -52,6 +52,7 @@ type APIError struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 	Code    string `json:"code"`
+	Detail  string `json:"detail"`
 }
 
 func handleAPIError(c *fiber.Ctx, status int, message string) error {
@@ -59,6 +60,7 @@ func handleAPIError(c *fiber.Ctx, status int, message string) error {
 		Status:  status,
 		Message: message,
 		Code:    fmt.Sprintf("ERR_%d", status),
+		Detail:  fmt.Sprintf("Detailed explanation for %d error", status),
 	})
 }
 
