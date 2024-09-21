@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -122,6 +123,44 @@ func healthHandler(c *fiber.Ctx) error {
 	})
 }
 
+type RateLimiter struct {
+    requests map[string][]time.Time
+    mu       sync.Mutex
+}
+
+func NewRateLimiter() *RateLimiter {
+    return &RateLimiter{
+        requests: make(map[string][]time.Time),
+    }
+}
+
+func (rl *RateLimiter) Limit(maxRequests int, window time.Duration) fiber.Handler {
+    return func(c *fiber.Ctx) error {
+        ip := c.IP()
+        now := time.Now()
+        
+        rl.mu.Lock()
+        defer rl.mu.Unlock()
+        
+        requests := rl.requests[ip]
+        
+        // Remove old requests outside the window
+        for i, t := range requests {
+            if now.Sub(t) > window {
+                requests = requests[i+1:]
+                break
+            }
+        }
+        
+        if len(requests) >= maxRequests {
+            return handleAPIError(c, 429, "Too many requests")
+        }
+        
+        rl.requests[ip] = append(requests, now)
+        return c.Next()
+    }
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -137,6 +176,8 @@ func main() {
 	collection = client.Database("golang_db").Collection("todos")
 
 	app := fiber.New()
+	limiter := NewRateLimiter()
+	app.Use(limiter.Limit(100, time.Minute))
 	app.Use(logMiddleware())
 
 	app.Get("/", getHandler)
