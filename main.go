@@ -78,17 +78,21 @@ func logMiddleware() fiber.Handler {
 }
 
 func initializeDatabase(uri string) (*mongo.Client, error) {
-	clientOption := options.Client().ApplyURI(uri)
-	client, err := mongo.Connect(context.Background(), clientOption)
+	clientOptions := options.Client().ApplyURI(uri)
+	clientOptions.SetMaxPoolSize(100)
+	clientOptions.SetMinPoolSize(5)
+	clientOptions.SetMaxConnIdleTime(30 * time.Second)
+	
+	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to MongoDB: %v", err)
 	}
-
+	
 	err = client.Ping(context.Background(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to ping MongoDB: %v", err)
 	}
-
+	
 	return client, nil
 }
 
