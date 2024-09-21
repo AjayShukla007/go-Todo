@@ -230,16 +230,17 @@ func main() {
 
 func getHandler(c *fiber.Ctx) error {
 	var todos []Todo
-	cursor, err := collection.Find(context.Background(), bson.M{})
+	opts := options.Find().SetSort(bson.D{{"created_at", -1}})
+	cursor, err := collection.Find(context.Background(), bson.M{}, opts)
 	if err != nil {
-		return err
+		return handleAPIError(c, 500, "Database query failed")
 	}
 	defer cursor.Close(context.Background())
 
 	for cursor.Next(context.Background()) {
 		var todo Todo
 		if err := cursor.Decode(&todo); err != nil {
-			return err
+			return handleAPIError(c, 500, "Failed to decode todo")
 		}
 		todos = append(todos, todo)
 	}
