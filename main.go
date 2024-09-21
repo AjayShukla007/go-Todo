@@ -162,6 +162,25 @@ func (rl *RateLimiter) Limit(maxRequests int, window time.Duration) fiber.Handle
     }
 }
 
+func timeoutMiddleware(timeout time.Duration) fiber.Handler {
+    return func(c *fiber.Ctx) error {
+        ctx, cancel := context.WithTimeout(context.Background(), timeout)
+        defer cancel()
+
+        done := make(chan error, 1)
+        go func() {
+            done <- c.Next()
+        }()
+
+        select {
+        case err := <-done:
+            return err
+        case <-ctx.Done():
+            return handleAPIError(c, 408, "Request timeout")
+        }
+    }
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -180,6 +199,7 @@ func main() {
 	limiter := NewRateLimiter()
 	app.Use(limiter.Limit(100, time.Minute))
 	app.Use(logMiddleware())
+	app.Use(timeoutMiddleware(10 * time.Second))
 
 	app.Get("/", getHandler)
 	app.Post("/api/post", postHandler)
