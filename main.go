@@ -236,6 +236,23 @@ func registerHandler(c *fiber.Ctx) error {
     return c.Status(201).SendString("User registered successfully")
 }
 
+func sendPasswordResetEmail(email string) error {
+    // Email sending logic here
+    return nil
+}
+
+func passwordResetHandler(c *fiber.Ctx) error {
+    email := c.FormValue("email")
+    if email == "" {
+        return handleAPIError(c, 400, "Email is required")
+    }
+    err := sendPasswordResetEmail(email)
+    if err != nil {
+        return handleAPIError(c, 500, "Failed to send password reset email")
+    }
+    return c.SendStatus(200)
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -264,6 +281,7 @@ func main() {
 	app.Delete("/api/deleteTodo/:id", delHandler)
 	app.Get("/health", healthHandler)
 	app.Post("/api/register", registerHandler)
+	app.Post("/api/passwordReset", passwordResetHandler)
 
 	port := config.Port
 
