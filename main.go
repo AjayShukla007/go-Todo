@@ -196,6 +196,17 @@ func corsMiddleware() fiber.Handler {
     }
 }
 
+func jwtMiddleware() fiber.Handler {
+    return func(c *fiber.Ctx) error {
+        token := c.Get("Authorization")
+        if token == "" {
+            return handleAPIError(c, 401, "No authorization token provided")
+        }
+        // Token validation logic here
+        return c.Next()
+    }
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -216,6 +227,7 @@ func main() {
 	app.Use(logMiddleware())
 	app.Use(timeoutMiddleware(10 * time.Second))
 	app.Use(corsMiddleware())
+	app.Use(jwtMiddleware())
 
 	app.Get("/", getHandler)
 	app.Post("/api/post", postHandler)
