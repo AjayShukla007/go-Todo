@@ -15,6 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"github.com/joho/godotenv"
+	"golang.org/x/crypto/bcrypt"
 	// "go.mongodb.org/mongo-driver/x/mongo/driver/mongocrypt/options"
 )
 
@@ -213,12 +214,25 @@ type User struct {
     Password string             `json:"password"`
 }
 
+func hashPassword(password string) (string, error) {
+    bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+    if err != nil {
+        return "", err
+    }
+    return string(bytes), nil
+}
+
 func registerHandler(c *fiber.Ctx) error {
     user := new(User)
     if err := c.BodyParser(user); err != nil {
         return handleAPIError(c, 400, "Invalid user data")
     }
-    // Password hashing and user saving logic here
+    hashedPassword, err := hashPassword(user.Password)
+    if err != nil {
+        return handleAPIError(c, 500, "Failed to hash password")
+    }
+    user.Password = hashedPassword
+    // User saving logic here
     return c.Status(201).SendString("User registered successfully")
 }
 
