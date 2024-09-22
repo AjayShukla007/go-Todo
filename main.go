@@ -207,6 +207,21 @@ func jwtMiddleware() fiber.Handler {
     }
 }
 
+type User struct {
+    ID       primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+    Username string             `json:"username"`
+    Password string             `json:"password"`
+}
+
+func registerHandler(c *fiber.Ctx) error {
+    user := new(User)
+    if err := c.BodyParser(user); err != nil {
+        return handleAPIError(c, 400, "Invalid user data")
+    }
+    // Password hashing and user saving logic here
+    return c.Status(201).SendString("User registered successfully")
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -234,6 +249,7 @@ func main() {
 	app.Patch("/api/updateTodo/:id", updateHandler)
 	app.Delete("/api/deleteTodo/:id", delHandler)
 	app.Get("/health", healthHandler)
+	app.Post("/api/register", registerHandler)
 
 	port := config.Port
 
