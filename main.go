@@ -290,6 +290,13 @@ func updateUserHandler(c *fiber.Ctx) error {
 	return c.SendStatus(200)
 }
 
+func userActivityLogger() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		log.Printf("User activity: %s %s", c.Method(), c.Path())
+		return c.Next()
+	}
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -311,6 +318,7 @@ func main() {
 	app.Use(timeoutMiddleware(10 * time.Second))
 	app.Use(corsMiddleware())
 	app.Use(jwtMiddleware())
+	app.Use(userActivityLogger())
 
 	app.Get("/", getHandler)
 	app.Post("/api/post", postHandler)
