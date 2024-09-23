@@ -299,6 +299,24 @@ func userActivityLogger() fiber.Handler {
 	}
 }
 
+type Comment struct {
+	ID     primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	TodoID primitive.ObjectID `json:"todoId" bson:"todoId"`
+	Text   string             `json:"text"`
+}
+
+func postCommentHandler(c *fiber.Ctx) error {
+	comment := new(Comment)
+	if err := c.BodyParser(comment); err != nil {
+		return handleAPIError(c, 400, "Invalid comment data")
+	}
+	_, err := collection.InsertOne(context.Background(), comment)
+	if err != nil {
+		return handleAPIError(c, 500, "Failed to add comment")
+	}
+	return c.Status(201).JSON(comment)
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -331,6 +349,7 @@ func main() {
 	app.Post("/api/passwordReset", passwordResetHandler)
 	app.Post("/api/login", loginHandler)
 	app.Patch("/api/user/:id", updateUserHandler)
+	app.Post("/api/todo/:id/comment", postCommentHandler)
 
 	port := config.Port
 
