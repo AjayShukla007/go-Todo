@@ -118,13 +118,19 @@ type HealthResponse struct {
 	Status    string `json:"status"`
 	Timestamp string `json:"timestamp"`
 	Version   string `json:"version"`
+	Database  string `json:"database"`
 }
 
 func healthHandler(c *fiber.Ctx) error {
+	dbStatus := "connected"
+	if err := client.Ping(context.Background(), nil); err != nil {
+		dbStatus = "disconnected"
+	}
 	return c.JSON(HealthResponse{
 		Status:    "ok",
 		Timestamp: time.Now().Format(time.RFC3339),
 		Version:   "2.0.0",
+		Database:  dbStatus,
 	})
 }
 
