@@ -522,3 +522,6 @@ test(training{"Raj", 100, 10}) */
 
 // RateLimiter implements request rate limiting per IP
 // Uses sliding window algorithm for accurate rate tracking
+
+// TODO: Move JWT secret to environment variables
+// Current implementation uses hardcoded secret for development
