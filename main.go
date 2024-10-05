@@ -122,6 +122,8 @@ type HealthResponse struct {
 }
 
 func healthHandler(c *fiber.Ctx) error {
+	// Check database connection status
+	// Returns "connected" if ping successful, "disconnected" otherwise
 	dbStatus := "connected"
 	if err := client.Ping(context.Background(), nil); err != nil {
 		dbStatus = "disconnected"
