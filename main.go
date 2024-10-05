@@ -57,6 +57,12 @@ type APIError struct {
 	Detail  string `json:"detail"`
 }
 
+// APIError provides standardized error response
+// Status: HTTP status code
+// Message: Human readable error message
+// Code: Machine readable error code
+// Detail: Additional error context
+
 func handleAPIError(c *fiber.Ctx, status int, message string) error {
 	return c.Status(status).JSON(APIError{
 		Status:  status,
