@@ -252,12 +252,23 @@ func sendPasswordResetEmail(email string) error {
 	return nil
 }
 
+func validateEmail(email string) error {
+	if !strings.Contains(email, "@") {
+		return fmt.Errorf("invalid email format")
+	}
+	return nil
+}
+
 func passwordResetHandler(c *fiber.Ctx) error {
 	email := c.FormValue("email")
 	if email == "" {
 		return handleAPIError(c, 400, "Email is required")
 	}
-	err := sendPasswordResetEmail(email)
+	err := validateEmail(email)
+	if err != nil {
+		return handleAPIError(c, 400, err.Error())
+	}
+	err = sendPasswordResetEmail(email)
 	if err != nil {
 		return handleAPIError(c, 500, "Failed to send password reset email")
 	}
