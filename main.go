@@ -455,6 +455,13 @@ func validateTodo(todo *Todo) error {
 	return nil
 }
 
+const (
+	ErrInvalidEmail    = "Invalid email format"
+	ErrTitleRequired   = "Title is required"
+	ErrTitleTooLong    = "Title must be less than 100 characters"
+	ErrTitleWhitespace = "Title cannot be only whitespace"
+)
+
 /*
 type employee interface {
 	getName() string
@@ -464,7 +471,7 @@ type employee interface {
 		type contractor struct {
 			name string
 			hourlyRate int
-			hoursWorked int
+				hoursWorked int
 		}
 
 		func (e contractor) getName() string {
