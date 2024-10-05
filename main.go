@@ -519,3 +519,6 @@ test(training{"Raj", 100, 10}) */
 // Expects todo ID in URL parameter
 // HTTP 200: Deleted successfully
 // HTTP 400: Invalid ID
+
+// RateLimiter implements request rate limiting per IP
+// Uses sliding window algorithm for accurate rate tracking
