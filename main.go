@@ -17,7 +17,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
+
 	// "go.mongodb.org/mongo-driver/x/mongo/driver/mongocrypt/options"
+	"github.com/google/uuid"
 )
 
 // Todo represents a single todo item in the database
@@ -340,6 +342,17 @@ func postCommentHandler(c *fiber.Ctx) error {
 	return c.Status(201).JSON(comment)
 }
 
+func requestIDMiddleware() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		requestID := c.Get("X-Request-ID")
+		if requestID == "" {
+			requestID = uuid.New().String()
+			c.Set("X-Request-ID", requestID)
+		}
+		return c.Next()
+	}
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -362,6 +375,7 @@ func main() {
 	app.Use(corsMiddleware())
 	app.Use(jwtMiddleware())
 	app.Use(userActivityLogger())
+	app.Use(requestIDMiddleware())
 
 	app.Get("/", getHandler)
 	app.Post("/api/post", postHandler)
