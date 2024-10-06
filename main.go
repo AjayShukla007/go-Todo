@@ -11,15 +11,13 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
-
-	// "go.mongodb.org/mongo-driver/x/mongo/driver/mongocrypt/options"
-	"github.com/google/uuid"
 )
 
 // Todo represents a single todo item in the database
