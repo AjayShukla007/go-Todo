@@ -88,18 +88,22 @@ func logMiddleware() fiber.Handler {
 }
 
 func initializeDatabase(uri string) (*mongo.Client, error) {
-	clientOptions := options.Client().ApplyURI(uri)
-	client, err := mongo.Connect(context.Background(), clientOptions)
-	if err != nil {
-		log.Printf("Failed to connect to MongoDB: %v", err)
-		return nil, err
+	maxRetries := 3
+	var client *mongo.Client
+	var err error
+
+	for i := 0; i < maxRetries; i++ {
+		clientOptions := options.Client().ApplyURI(uri)
+		client, err = mongo.Connect(context.Background(), clientOptions)
+		if err == nil {
+			if err = client.Ping(context.Background(), nil); err == nil {
+				return client, nil
+			}
+		}
+		log.Printf("Failed to connect to MongoDB (attempt %d/%d): %v", i+1, maxRetries, err)
+		time.Sleep(time.Second * 2)
 	}
-	err = client.Ping(context.Background(), nil)
-	if err != nil {
-		log.Printf("Failed to ping MongoDB: %v", err)
-		return nil, err
-	}
-	return client, nil
+	return nil, fmt.Errorf("failed to connect after %d attempts", maxRetries)
 }
 
 type Config struct {
