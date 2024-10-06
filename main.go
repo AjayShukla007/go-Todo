@@ -134,6 +134,12 @@ type HealthResponse struct {
 }
 
 func healthHandler(c *fiber.Ctx) error {
+	// healthHandler provides system health information
+	// Returns:
+	//   - Status: Current system status (ok/error)
+	//   - Timestamp: Current server time
+	//   - Version: API version
+	//   - Database: MongoDB connection status
 	// Check database connection status
 	// Returns "connected" if ping successful, "disconnected" otherwise
 	dbStatus := "connected"
