@@ -36,7 +36,7 @@ var collection *mongo.Collection
 
 // BlogsAPI - A RESTful API for managing blog posts
 // Author: Ajay Shukla
-// Version: 1.0.0
+// Version: 1.0.1
 // Environment Variables:
 // MONGO_URI - MongoDB connection string
 // PORT - Server port number
