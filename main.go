@@ -398,15 +398,17 @@ func main() {
 }
 
 func getHandler(c *fiber.Ctx) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	var todos []Todo
-	opts := options.Find().SetSort(bson.D{{"created_at", -1}})
-	cursor, err := collection.Find(context.Background(), bson.M{}, opts)
+	cursor, err := collection.Find(ctx, bson.M{})
 	if err != nil {
 		return handleAPIError(c, 500, "Database query failed")
 	}
-	defer cursor.Close(context.Background())
+	defer cursor.Close(ctx)
 
-	for cursor.Next(context.Background()) {
+	for cursor.Next(ctx) {
 		var todo Todo
 		if err := cursor.Decode(&todo); err != nil {
 			return handleAPIError(c, 500, "Failed to decode todo")
