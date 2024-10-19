@@ -62,7 +62,6 @@ type APIError struct {
 // Message: Human readable error message
 // Code: Machine readable error code
 // Detail: Additional error context
-
 func handleAPIError(c *fiber.Ctx, status int, message string) error {
 	return c.Status(status).JSON(APIError{
 		Status:  status,
@@ -84,7 +83,6 @@ func logMiddleware() fiber.Handler {
 			time.Since(start),
 			c.IP(),
 		)
-
 		return err
 	}
 }
