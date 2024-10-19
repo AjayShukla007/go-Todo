@@ -371,7 +371,10 @@ func main() {
 
 	collection = client.Database("golang_db").Collection("todos")
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		BodyLimit:   1 * 1024 * 1024, // 1MB limit
+		ReadTimeout: 5 * time.Second,
+	})
 	limiter := NewRateLimiter()
 	app.Use(limiter.Limit(100, time.Minute))
 	app.Use(logMiddleware())
