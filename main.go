@@ -214,6 +214,8 @@ func corsMiddleware() fiber.Handler {
 		c.Set("Access-Control-Allow-Origin", "*")
 		c.Set("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE")
 		c.Set("Access-Control-Allow-Headers", "Content-Type, Accept")
+		c.Set("X-Content-Type-Options", "nosniff")
+		c.Set("X-Frame-Options", "DENY")
 		return c.Next()
 	}
 }
