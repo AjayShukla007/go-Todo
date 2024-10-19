@@ -77,12 +77,14 @@ func logMiddleware() fiber.Handler {
 		start := time.Now()
 		err := c.Next()
 		log.Printf(
-			"method=%s path=%s status=%d duration=%s",
+			"method=%s path=%s status=%d duration=%s ip=%s",
 			c.Method(),
 			c.Path(),
 			c.Response().StatusCode(),
 			time.Since(start),
+			c.IP(),
 		)
+
 		return err
 	}
 }
