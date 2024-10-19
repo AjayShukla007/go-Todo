@@ -471,13 +471,10 @@ func delHandler(c *fiber.Ctx) error {
 
 func validateTodo(todo *Todo) error {
 	if todo.Title == "" {
-		return fmt.Errorf("title is required")
+		return fmt.Errorf("ERR_VALIDATION: title is required")
 	}
 	if len(todo.Title) > 100 {
-		return fmt.Errorf("title must be less than 100 characters")
-	}
-	if strings.TrimSpace(todo.Title) == "" {
-		return fmt.Errorf("title cannot be only whitespace")
+		return fmt.Errorf("ERR_VALIDATION: title exceeds maximum length")
 	}
 	return nil
 }
