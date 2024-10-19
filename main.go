@@ -428,8 +428,8 @@ func postHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(todo); err != nil {
 		return handleAPIError(c, 400, "Invalid request body")
 	}
-	if err := validateTodo(todo); err != nil {
-		return handleAPIError(c, 400, err.Error())
+	if strings.TrimSpace(todo.Title) == "" {
+		return handleAPIError(c, 400, "Title cannot be empty or whitespace")
 	}
 	insertResult, err := collection.InsertOne(context.Background(), todo)
 	if err != nil {
