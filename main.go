@@ -341,12 +341,9 @@ func userActivityLogger() fiber.Handler {
 }
 
 type Comment struct {
-	ID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	TodoID    primitive.ObjectID `json:"todoId" bson:"todoId"`
-	Text      string             `json:"text"`
-	CreatedAt time.Time          `json:"createdAt" bson:"createdAt"`
-	UpdatedAt time.Time          `json:"updatedAt" bson:"updatedAt"`
-	UserID    primitive.ObjectID `json:"userId" bson:"userId"`
+	ID     primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	TodoID primitive.ObjectID `json:"todoId" bson:"todoId"`
+	Text   string             `json:"text"`
 }
 
 func postCommentHandler(c *fiber.Ctx) error {
