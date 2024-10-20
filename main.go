@@ -44,6 +44,7 @@ var collection *mongo.Collection
 // @description A RESTful API for managing blogs and todos with MongoDB
 // @host localhost:8080
 // @BasePath /api/v1
+
 // @schemes http https
 // @contact.name API Support
 // @contact.email support@example.com
