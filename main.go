@@ -147,30 +147,15 @@ func healthHandler(c *fiber.Ctx) error {
 
 type RateLimiter struct {
 	requests map[string][]time.Time
-	mu       sync.RWMutex
-	cleanup  time.Duration
+	mu       sync.Mutex
 }
 
 func NewRateLimiter() *RateLimiter {
-	rl := &RateLimiter{
-		requests: make(map[string][]time.Time),
-		cleanup:  time.Minute * 5,
-	}
-	go rl.startCleanup()
-	return rl
-}
 
-func (rl *RateLimiter) startCleanup() {
-	ticker := time.NewTicker(rl.cleanup)
-	for range ticker.C {
-		rl.mu.Lock()
-		for ip := range rl.requests {
-			if len(rl.requests[ip]) == 0 {
-				delete(rl.requests, ip)
-			}
-		}
-		rl.mu.Unlock()
+	return &RateLimiter{
+		requests: make(map[string][]time.Time),
 	}
+
 }
 
 func (rl *RateLimiter) Limit(maxRequests int, window time.Duration) fiber.Handler {
