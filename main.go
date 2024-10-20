@@ -151,9 +151,11 @@ type RateLimiter struct {
 }
 
 func NewRateLimiter() *RateLimiter {
+
 	return &RateLimiter{
 		requests: make(map[string][]time.Time),
 	}
+
 }
 
 func (rl *RateLimiter) Limit(maxRequests int, window time.Duration) fiber.Handler {
