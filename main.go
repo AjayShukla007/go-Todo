@@ -242,9 +242,11 @@ func jwtMiddleware() fiber.Handler {
 }
 
 type User struct {
-	ID       primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Username string             `json:"username"`
-	Password string             `json:"password"`
+	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	Username    string             `json:"username"`
+	Password    string             `json:"password"`
+	LastLoginAt time.Time          `json:"lastLoginAt" bson:"lastLoginAt"`
+	IsActive    bool               `json:"isActive" bson:"isActive"`
 }
 
 func hashPassword(password string) (string, error) {
