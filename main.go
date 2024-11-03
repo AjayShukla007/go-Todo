@@ -305,6 +305,8 @@ func generateJWT(user User) (string, error) {
 	claims["user_id"] = user.ID.Hex()
 	claims["username"] = user.Username
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	claims["iat"] = time.Now().Unix()
+	claims["is_active"] = user.IsActive
 
 	tokenString, err := token.SignedString([]byte("your_secret_key"))
 	if err != nil {
