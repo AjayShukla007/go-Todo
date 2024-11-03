@@ -267,6 +267,9 @@ func registerHandler(c *fiber.Ctx) error {
 		return handleAPIError(c, 500, "Failed to hash password")
 	}
 	user.Password = hashedPassword
+	user.LastLoginAt = time.Now()
+	user.IsActive = true
+
 	// User saving logic here
 	return c.Status(201).SendString("User registered successfully")
 }
